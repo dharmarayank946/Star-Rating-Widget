@@ -1,0 +1,676 @@
+/* ==========================================================================
+   VEDA TECHNOLOGY WEB DEVELOPMENT INTERNSHIP — TASK 19: STAR RATING WIDGET
+   Theme: Light Pastel Green & White with Golden-Yellow Star Accents
+   Developer: Nagalambika D Koralli
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS VARIABLES & DESIGN TOKENS
+   -------------------------------------------------------------------------- */
+:root {
+  /* Color Palette - Light Pastel Green & White */
+  --bg-page: #F4F8F5;
+  --bg-card: #FFFFFF;
+  --bg-card-subtle: #FAFDFB;
+  --bg-badge: #EAF5EE;
+  --bg-hover-pill: #F0F9F3;
+
+  /* Primary Forest / Sage Greens (High contrast WCAG AAA) */
+  --primary-green: #2D6A4F;
+  --primary-green-hover: #21543E;
+  --primary-green-active: #183E2D;
+  --primary-green-light: #EAF5EE;
+  --primary-green-subtle: rgba(45, 106, 79, 0.08);
+
+  /* Typography Colors */
+  --text-primary: #1C2B21;
+  --text-secondary: #526659;
+  --text-muted: #73887B;
+  --text-inverted: #FFFFFF;
+
+  /* Borders & Dividers */
+  --border-light: #E2EFE6;
+  --border-default: #D0E7D7;
+  --border-hover: #A3D1B1;
+  --border-focus: #2D6A4F;
+
+  /* Golden-Yellow Star Colors */
+  --star-empty-stroke: #C5D8CC;
+  --star-empty-fill: #F3F7F4;
+  --star-filled-gold: #F59E0B;
+  --star-filled-stroke: #D97706;
+  --star-hover-gold: #FBBF24;
+  --star-hover-stroke: #F59E0B;
+  --star-glow: rgba(245, 158, 11, 0.35);
+
+  /* Focus & Elevation Shadows */
+  --focus-ring: 0 0 0 3px rgba(45, 106, 79, 0.28);
+  --shadow-sm: 0 2px 4px rgba(28, 43, 33, 0.04);
+  --shadow-card: 0 10px 30px -5px rgba(28, 43, 33, 0.08), 0 4px 12px -2px rgba(28, 43, 33, 0.04);
+  --shadow-btn: 0 2px 6px rgba(45, 106, 79, 0.12);
+
+  /* Typography */
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   2. GLOBAL RESET & BASE STYLES
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-main);
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Hidden utility */
+.hidden {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. TOAST NOTIFICATION
+   -------------------------------------------------------------------------- */
+.toast-notification {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--bg-card);
+  color: var(--primary-green);
+  border: 1px solid var(--border-default);
+  box-shadow: 0 10px 25px -4px rgba(28, 43, 33, 0.12);
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: opacity var(--transition-normal), transform var(--transition-normal);
+  animation: slideDownToast 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideDownToast {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -16px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.toast-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  stroke: var(--primary-green);
+}
+
+/* --------------------------------------------------------------------------
+   4. LAYOUT & CARD CONTAINER
+   -------------------------------------------------------------------------- */
+.app-container {
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+.rating-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 36px 32px;
+  text-align: center;
+  position: relative;
+}
+
+/* --------------------------------------------------------------------------
+   5. HEADER SECTION
+   -------------------------------------------------------------------------- */
+.card-header {
+  margin-bottom: 28px;
+}
+
+.badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background-color: var(--bg-badge);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  color: var(--primary-green);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 14px;
+}
+
+.badge-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.25;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   6. STAR RATING COMPONENT
+   -------------------------------------------------------------------------- */
+.rating-widget-body {
+  margin-bottom: 24px;
+}
+
+.stars-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 8px;
+  margin-bottom: 16px;
+  touch-action: manipulation;
+}
+
+.star-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--star-empty-stroke);
+  transition: transform var(--transition-normal), color var(--transition-fast);
+  outline: none;
+}
+
+.star-icon {
+  width: 52px;
+  height: 52px;
+  fill: var(--star-empty-fill);
+  stroke: var(--star-empty-stroke);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  transition: fill var(--transition-fast), stroke var(--transition-fast), transform var(--transition-fast), filter var(--transition-fast);
+}
+
+/* Subtle Star Hover Scaling (Individual star) */
+.star-btn:hover {
+  transform: scale(1.12);
+}
+
+.star-btn:active {
+  transform: scale(0.96);
+}
+
+/* Focus Indicator for Keyboard Accessibility */
+.star-btn:focus-visible {
+  outline: 2px solid var(--primary-green);
+  outline-offset: 4px;
+  box-shadow: var(--focus-ring);
+  background-color: var(--bg-badge);
+}
+
+/* --------------------------------------------------------------------------
+   STAR STATES: Selected & Hovered
+   Requirement 8: Keep hover state separate from selected rating state.
+   - When user hovers: `.hovered` class is applied to stars 1..hoverVal.
+   - When user clicks: `.selected` class is applied to stars 1..selectedVal.
+   - If mouse leaves: `.hovered` is cleared, reverting visually to `.selected`.
+   -------------------------------------------------------------------------- */
+
+/* SELECTED STATE: Golden Yellow */
+.star-btn.selected .star-icon {
+  fill: var(--star-filled-gold);
+  stroke: var(--star-filled-stroke);
+  filter: drop-shadow(0 2px 4px var(--star-glow));
+}
+
+/* HOVER PREVIEW STATE: Vibrant Golden Hover */
+.star-btn.hovered .star-icon {
+  fill: var(--star-hover-gold);
+  stroke: var(--star-hover-stroke);
+  filter: drop-shadow(0 4px 8px var(--star-glow));
+}
+
+/* When in hover mode, unhovered stars inside container stay soft gray */
+.stars-wrapper.is-hovering .star-btn:not(.hovered) .star-icon {
+  fill: var(--star-empty-fill);
+  stroke: var(--star-empty-stroke);
+  filter: none;
+}
+
+/* --------------------------------------------------------------------------
+   7. FEEDBACK & RATING STATUS CARD
+   -------------------------------------------------------------------------- */
+.feedback-card {
+  background-color: var(--bg-card-subtle);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  margin-bottom: 20px;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+  position: relative;
+}
+
+.feedback-card.has-rating {
+  border-color: var(--primary-green);
+  background-color: #F8FCF9;
+}
+
+.rating-display-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.rating-primary-text {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: color var(--transition-fast);
+}
+
+.rating-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  background-color: var(--primary-green);
+  color: var(--text-inverted);
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+
+.rating-sentiment {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  min-height: 1.4em;
+  transition: color var(--transition-fast);
+}
+
+/* Hover Preview Notice Indicator */
+.hover-preview-notice {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--primary-green);
+  background-color: var(--bg-badge);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+}
+
+.hover-eye-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   8. ACTION BUTTONS & RESET
+   -------------------------------------------------------------------------- */
+.action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-main);
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition-normal);
+  text-decoration: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--primary-green);
+  outline-offset: 3px;
+  box-shadow: var(--focus-ring);
+}
+
+.btn-reset {
+  background-color: transparent;
+  color: var(--primary-green);
+  border: 1px solid var(--border-default);
+}
+
+.btn-reset:not(:disabled):hover {
+  background-color: var(--bg-badge);
+  border-color: var(--primary-green);
+  color: var(--primary-green-hover);
+  box-shadow: var(--shadow-btn);
+}
+
+.btn-reset:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+.btn-reset:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-color: var(--border-light);
+  color: var(--text-muted);
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   9. QUICK TEST PRESET CHIPS
+   -------------------------------------------------------------------------- */
+.presets-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-light);
+}
+
+.presets-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.preset-buttons-group {
+  display: inline-flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.preset-chip {
+  background-color: var(--bg-badge);
+  color: var(--primary-green);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.preset-chip:hover {
+  background-color: var(--primary-green);
+  color: var(--text-inverted);
+  border-color: var(--primary-green);
+}
+
+.preset-chip:focus-visible {
+  outline: 2px solid var(--primary-green);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   10. RATING SCALE REFERENCE GUIDE
+   -------------------------------------------------------------------------- */
+.scale-guide {
+  background-color: var(--bg-card-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.guide-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.guide-icon {
+  width: 16px;
+  height: 16px;
+  stroke: var(--primary-green);
+}
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.guide-item {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 8px 4px;
+  text-align: center;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.guide-item.active-level {
+  border-color: var(--primary-green);
+  background-color: var(--bg-badge);
+  font-weight: 700;
+}
+
+.guide-stars {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--star-filled-stroke);
+  margin-bottom: 2px;
+}
+
+.guide-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.guide-item.active-level .guide-label {
+  color: var(--primary-green);
+}
+
+/* --------------------------------------------------------------------------
+   11. CARD FOOTER & KEYBOARD INSTRUCTIONS
+   -------------------------------------------------------------------------- */
+.card-footer {
+  padding-top: 18px;
+  border-top: 1px solid var(--border-light);
+}
+
+.keyboard-tips {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.kbd-badge {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+kbd {
+  background-color: var(--bg-page);
+  border: 1px solid var(--border-default);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 1px 6px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.internship-credit {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.internship-credit strong {
+  color: var(--primary-green);
+}
+
+.internship-credit em {
+  font-style: normal;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   12. RESPONSIVE DESIGN (Mobile & Tablet)
+   -------------------------------------------------------------------------- */
+@media (max-width: 540px) {
+  body {
+    padding: 16px 12px;
+  }
+
+  .rating-card {
+    padding: 24px 18px;
+  }
+
+  .title {
+    font-size: 1.45rem;
+  }
+
+  .subtitle {
+    font-size: 0.88rem;
+  }
+
+  .stars-wrapper {
+    gap: 6px;
+    padding: 12px 0;
+  }
+
+  .star-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .star-btn {
+    padding: 4px;
+  }
+
+  .guide-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+  }
+
+  .guide-stars {
+    font-size: 0.72rem;
+  }
+
+  .guide-label {
+    font-size: 0.68rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .star-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .stars-wrapper {
+    gap: 4px;
+  }
+
+  .guide-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .rating-primary-text {
+    font-size: 1.02rem;
+  }
+}

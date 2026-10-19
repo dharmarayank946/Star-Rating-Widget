@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VEDA Technology Web Development Internship Task 19 — Star Rating Widget. An interactive, keyboard-accessible star rating component built with vanilla HTML5, CSS3, and JavaScript in a clean light pastel green and white theme.">
+  <title>Star Rating Widget | VEDA Technology Internship Task 19</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastNotification" class="toast-notification hidden" role="status" aria-live="polite">
+    <svg class="toast-icon check-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M16 6l-8 8-4-4"></path>
+      <circle cx="10" cy="10" r="9"></circle>
+    </svg>
+    <svg class="toast-icon reset-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+      <path d="M3 3v5h5"></path>
+    </svg>
+    <span id="toastMessage">Rating updated!</span>
+  </div>
+
+  <main class="app-container">
+    <section class="rating-card" aria-labelledby="app-title">
+
+      <!-- HEADER -->
+      <header class="card-header">
+        <div class="badge-tag">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          <span>Interactive Feedback Widget • Task 19</span>
+        </div>
+        <h1 id="app-title" class="title">Star Rating Widget</h1>
+        <p class="subtitle">Hover over stars to preview, click to submit, or navigate using your keyboard</p>
+      </header>
+
+      <!-- STAR RATING COMPONENT SECTION -->
+      <div class="rating-widget-body">
+        
+        <!-- Stars Container with Accessible Radio Group -->
+        <div 
+          class="stars-wrapper" 
+          id="starsContainer" 
+          role="radiogroup" 
+          aria-label="Rating out of 5 stars"
+        >
+          <!-- Star 1 -->
+          <button 
+            type="button" 
+            class="star-btn" 
+            data-value="1" 
+            role="radio" 
+            aria-checked="false" 
+            aria-label="1 star - Poor"
+            title="1 star - Poor"
+          >
+            <svg class="star-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span class="sr-only">1 Star</span>
+          </button>
+
+          <!-- Star 2 -->
+          <button 
+            type="button" 
+            class="star-btn" 
+            data-value="2" 
+            role="radio" 
+            aria-checked="false" 
+            aria-label="2 stars - Fair"
+            title="2 stars - Fair"
+          >
+            <svg class="star-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span class="sr-only">2 Stars</span>
+          </button>
+
+          <!-- Star 3 -->
+          <button 
+            type="button" 
+            class="star-btn" 
+            data-value="3" 
+            role="radio" 
+            aria-checked="false" 
+            aria-label="3 stars - Good"
+            title="3 stars - Good"
+          >
+            <svg class="star-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span class="sr-only">3 Stars</span>
+          </button>
+
+          <!-- Star 4 -->
+          <button 
+            type="button" 
+            class="star-btn" 
+            data-value="4" 
+            role="radio" 
+            aria-checked="false" 
+            aria-label="4 stars - Very Good"
+            title="4 stars - Very Good"
+          >
+            <svg class="star-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span class="sr-only">4 Stars</span>
+          </button>
+
+          <!-- Star 5 -->
+          <button 
+            type="button" 
+            class="star-btn" 
+            data-value="5" 
+            role="radio" 
+            aria-checked="false" 
+            aria-label="5 stars - Excellent"
+            title="5 stars - Excellent"
+          >
+            <svg class="star-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span class="sr-only">5 Stars</span>
+          </button>
+        </div>
+
+        <!-- LIVE RATING STATUS DISPLAY BOX -->
+        <div class="feedback-card" id="feedbackCard" aria-live="polite">
+          
+          <!-- Primary Rating Text -->
+          <div class="rating-display-header">
+            <span class="rating-primary-text" id="ratingText">Please click or tap a star to set your rating</span>
+            <span class="rating-badge hidden" id="ratingBadge">5 / 5</span>
+          </div>
+
+          <!-- Rating Sentiment & Helpful Description -->
+          <p class="rating-sentiment" id="ratingSentiment">
+            We value your honest feedback to improve our services.
+          </p>
+          
+          <!-- Live Preview Indicator (Only shown while hovering) -->
+          <div class="hover-preview-notice hidden" id="hoverNotice" aria-hidden="true">
+            <svg class="hover-eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <span id="hoverNoticeText">Hover Preview: 3 / 5</span>
+          </div>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="action-bar">
+          <button 
+            type="button" 
+            class="btn btn-reset" 
+            id="resetBtn" 
+            disabled 
+            aria-label="Reset rating selection to empty"
+          >
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+              <path d="M3 3v5h5"></path>
+            </svg>
+            <span>Reset Rating</span>
+          </button>
+        </div>
+
+        <!-- QUICK TEST PRESETS -->
+        <div class="presets-section">
+          <span class="presets-title">Quick Test Presets:</span>
+          <div class="preset-buttons-group">
+            <button type="button" class="preset-chip" data-preset="1" aria-label="Test rating 1 star">1 ★ Poor</button>
+            <button type="button" class="preset-chip" data-preset="3" aria-label="Test rating 3 stars">3 ★ Good</button>
+            <button type="button" class="preset-chip" data-preset="5" aria-label="Test rating 5 stars">5 ★ Excellent</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RATING SCALE REFERENCE GUIDE -->
+      <section class="scale-guide" aria-label="Rating scale meaning guide">
+        <h2 class="guide-title">
+          <svg class="guide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          Rating Scale Guide
+        </h2>
+        <div class="guide-grid">
+          <div class="guide-item" data-guide-val="1">
+            <span class="guide-stars">★ 1</span>
+            <span class="guide-label">Poor</span>
+          </div>
+          <div class="guide-item" data-guide-val="2">
+            <span class="guide-stars">★ 2</span>
+            <span class="guide-label">Fair</span>
+          </div>
+          <div class="guide-item" data-guide-val="3">
+            <span class="guide-stars">★ 3</span>
+            <span class="guide-label">Good</span>
+          </div>
+          <div class="guide-item" data-guide-val="4">
+            <span class="guide-stars">★ 4</span>
+            <span class="guide-label">Very Good</span>
+          </div>
+          <div class="guide-item" data-guide-val="5">
+            <span class="guide-stars">★ 5</span>
+            <span class="guide-label">Excellent</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- KEYBOARD SHORTCUTS INSTRUCTION -->
+      <footer class="card-footer">
+        <div class="keyboard-tips">
+          <span class="kbd-badge"><kbd>←</kbd> / <kbd>→</kbd> Navigate</span>
+          <span class="kbd-badge"><kbd>Enter</kbd> / <kbd>Space</kbd> Select</span>
+          <span class="kbd-badge"><kbd>Home</kbd> 1★</span>
+          <span class="kbd-badge"><kbd>End</kbd> 5★</span>
+        </div>
+        <p class="internship-credit">
+          <strong>VEDA Technology Web Development Internship</strong> • Task 19<br>
+          Developed by <em>Nagalambika D Koralli</em>
+        </p>
+      </footer>
+
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
