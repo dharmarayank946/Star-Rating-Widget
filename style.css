@@ -569,7 +569,7 @@ body {
   justify-content: center;
   gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 14px;
+  margin-bottom: 0;
 }
 
 .kbd-badge {
